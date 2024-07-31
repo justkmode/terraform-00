@@ -59,25 +59,25 @@ resource "aws_subnet" "subnet2" {
 }
 
 # Internet Gateway
-resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.main.id
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.main.owner_id
 
   tags = {
-    Name = "main-gateway"
+    Name = "main-vpc-igw"
   }
 }
 
 # Route Table
-resource "aws_route_table" "public" {
+resource "aws_route_table" "route_table" {
   vpc_id = aws_vpc.main.id
 
-  route {
+  route = {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.gw.id
+    gateway_id = aws_internet_gateway.igw.id
   }
 
   tags = {
-    Name = "public-route-table"
+    Name = "main-public-route-table"
   }
 }
 
