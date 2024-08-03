@@ -10,24 +10,6 @@ provider "aws" {
 
 
 # VPC
-
-
-# Subnet 1
-
-
-# Subnet 2
-
-
-# Internet Gateway
-
-
-# Route Table
-
-
-# Write
-
-
-# VPC
 resource "aws_vpc" "main" {
   cidr_block = "192.168.0.0/16"
   
@@ -40,10 +22,10 @@ resource "aws_vpc" "main" {
 resource "aws_subnet" "subnet1" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "192.168.1.0/24"
-  availability_zone = "eu-north-1"
+  availability_zone = "eu-north-1a"
   
   tags = {
-    Name = "subnet-1"
+    Name = "Subnet-1"
   }
 }
 
@@ -51,16 +33,16 @@ resource "aws_subnet" "subnet1" {
 resource "aws_subnet" "subnet2" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "192.168.2.0/24"
-  availability_zone = "eu-north-1"
+  availability_zone = "eu-north-1b"
   
   tags = {
-    Name = "subnet-2"
+    Name = "Subnet-2"
   }
 }
 
 # Internet Gateway
 resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.main.owner_id
+  vpc_id = aws_vpc.main.id
 
   tags = {
     Name = "main-vpc-igw"
@@ -71,7 +53,7 @@ resource "aws_internet_gateway" "igw" {
 resource "aws_route_table" "route_table" {
   vpc_id = aws_vpc.main.id
 
-  route = {
+  route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
@@ -84,11 +66,11 @@ resource "aws_route_table" "route_table" {
 # Route Table Association for Subnet 1
 resource "aws_route_table_association" "subnet1_association" {
   subnet_id      = aws_subnet.subnet1.id
-  route_table_id = aws_route_table.public.id
+  route_table_id = aws_route_table.route_table.id
 }
 
 # Route Table Association for Subnet 2
 resource "aws_route_table_association" "subnet2_association" {
   subnet_id      = aws_subnet.subnet2.id
-  route_table_id = aws_route_table.public.id
+  route_table_id = aws_route_table.route_table.id
 }
