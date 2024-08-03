@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "eu-west-2"
+  region = "eu-north-1"
 }
 
 # Write
@@ -40,7 +40,7 @@ resource "aws_vpc" "main" {
 resource "aws_subnet" "subnet1" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "192.168.1.0/24"
-  availability_zone = "us-west-2a"
+  availability_zone = "eu-north-1"
   
   tags = {
     Name = "subnet-1"
@@ -51,7 +51,7 @@ resource "aws_subnet" "subnet1" {
 resource "aws_subnet" "subnet2" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "192.168.2.0/24"
-  availability_zone = "us-west-2b"
+  availability_zone = "eu-north-1"
   
   tags = {
     Name = "subnet-2"
